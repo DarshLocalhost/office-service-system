@@ -33,13 +33,10 @@ public class RequestService {
     private final WebSocketService webSocketService;
     private final NotificationService notificationService;
 
-    @Transactional
-    @Override
+    @Transactional  
 public Request createRequest(RequestDto dto) {
 
     try {
-
-        // 👉 YOUR EXISTING CODE (DON’T CHANGE ANYTHING INSIDE)
 
         log.info("Creating request for item ID: {}", dto.getItemId());
 
@@ -66,7 +63,7 @@ public Request createRequest(RequestDto dto) {
                 .createdBy(createdBy)
                 .assignedTo(assignedTo)
                 .quantity(dto.getQuantity())
-                .status(RequestStatus.PENDING)
+                .status(Request.RequestStatus.PENDING) // ✅ FIXED
                 .customization(dto.getCustomization())
                 .floor(createdBy.getFloor())
                 .build();
@@ -87,11 +84,10 @@ public Request createRequest(RequestDto dto) {
         return request;
 
     } catch (Exception e) {
-        log.error("🔥 CREATE REQUEST FAILED", e); // 🔥 THIS LINE IS IMPORTANT
+        log.error("🔥 CREATE REQUEST FAILED", e);
         throw e;
     }
 }
-
     @Transactional(readOnly = true)
     public List<Request> getAllRequests() {
         log.info("=== GET ALL REQUESTS DEBUG ===");
