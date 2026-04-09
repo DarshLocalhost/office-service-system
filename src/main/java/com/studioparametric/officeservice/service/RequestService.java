@@ -204,12 +204,21 @@ public class RequestService {
         // Create new user
         User newUser = User.builder()
                 .name(userDto.getName())
-                .email(userDto.getEmail() != null ? userDto.getEmail() : userDto.getName().toLowerCase().replace(" ", ".") + "@company.com")
-                .floor(standardizedFloor)
-                .role(User.UserRole.EMPLOYEE)
-                .build();
-        
-        return userRepository.save(newUser);
+               String email = userDto.getEmail();
+
+if (email == null || email.trim().isEmpty()) {
+    email = userDto.getName().toLowerCase().replace(" ", ".") 
+            + System.currentTimeMillis() + "@company.com";
+}
+
+User newUser = User.builder()
+        .name(userDto.getName())
+        .email(email)
+        .floor(standardizedFloor)
+        .role(User.UserRole.EMPLOYEE)
+        .build();
+
+return userRepository.save(newUser);
     }
 
     private String standardizeFloorFormat(String floor) {
