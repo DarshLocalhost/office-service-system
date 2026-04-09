@@ -1,6 +1,6 @@
 package com.studioparametric.officeservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties; // ✅ ADD THIS
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
