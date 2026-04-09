@@ -51,8 +51,9 @@ public class RequestService {
 
         // Use frontend user data if provided, fallback to first employee
         User createdBy;
-        if (dto.getUser() != null && dto.getUser().getName() != null) {
-            // Find or create user based on frontend data
+       // if (dto.getUser() != null && dto.getUser().getName() != null) {
+        if (dto.getUser() != null && dto.getUser().getName() != null && !dto.getUser().getName().trim().isEmpty()){ 
+        // Find or create user based on frontend data
             createdBy = findOrCreateUser(dto.getUser());
             log.info("Request created by frontend user: {} (floor: {})", createdBy.getName(), createdBy.getFloor());
         } else {
