@@ -1,5 +1,6 @@
 package com.studioparametric.officeservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties; // ✅ ADD THIS
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,11 +17,10 @@ public class RequestOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
- @ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "request_id", nullable = false)
-
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-private Request request;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Request request;
 
     @Column(name = "option_name", nullable = false)
     private String optionName;
