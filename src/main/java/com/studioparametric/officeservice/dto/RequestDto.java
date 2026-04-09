@@ -22,9 +22,18 @@ public class RequestDto {
     @AllArgsConstructor
     @Builder
     public static class OptionDto {
-        private String name;
-        private String value;
+
+    private String optionName;
+    private String selectedValue;
+
+    public String getName() {
+        return optionName;
     }
+
+    public String getValue() {
+        return selectedValue;
+    }
+}
 
     @Getter
     @Setter
