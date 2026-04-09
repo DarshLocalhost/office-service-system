@@ -178,48 +178,45 @@ public class RequestService {
         return null;
     }
 
-    private User findOrCreateUser(RequestDto.UserDto userDto) {
-        // Standardize floor format
-        String standardizedFloor = standardizeFloorFormat(userDto.getFloor());
-        
-        // Try to find existing user by email
-        if (userDto.getEmail() != null && !userDto.getEmail().trim().isEmpty()) {
-            try {
-                User existingUser = userRepository.findByEmail(userDto.getEmail())
-                        .orElse(null);
-                if (existingUser != null) {
-                    // Update existing user data
-                    existingUser.setName(userDto.getName());
-                    existingUser.setFloor(standardizedFloor);
-                    if (userDto.getPhone() != null) {
-                        // Note: Phone would need to be added to User entity if needed
-                    }
-                    return userRepository.save(existingUser);
-                }
-            } catch (Exception e) {
-                log.warn("Error finding user by email: {}", e.getMessage());
+   private User findOrCreateUser(RequestDto.UserDto userDto) {
+
+    // Standardize floor format
+    String standardizedFloor = standardizeFloorFormat(userDto.getFloor());
+
+    // Try to find existing user by email
+    if (userDto.getEmail() != null && !userDto.getEmail().trim().isEmpty()) {
+        try {
+            User existingUser = userRepository.findByEmail(userDto.getEmail())
+                    .orElse(null);
+
+            if (existingUser != null) {
+                existingUser.setName(userDto.getName());
+                existingUser.setFloor(standardizedFloor);
+                return userRepository.save(existingUser);
             }
+        } catch (Exception e) {
+            log.warn("Error finding user by email: {}", e.getMessage());
         }
-        
-        // Create new user
-        User newUser = User.builder()
-                .name(userDto.getName())
-               String email = userDto.getEmail();
-
-if (email == null || email.trim().isEmpty()) {
-    email = userDto.getName().toLowerCase().replace(" ", ".") 
-            + System.currentTimeMillis() + "@company.com";
-}
-
-User newUser = User.builder()
-        .name(userDto.getName())
-        .email(email)
-        .floor(standardizedFloor)
-        .role(User.UserRole.EMPLOYEE)
-        .build();
-
-return userRepository.save(newUser);
     }
+
+    // 🔥 FIX STARTS HERE (CLEAN LOGIC)
+
+    String email = userDto.getEmail();
+
+    if (email == null || email.trim().isEmpty()) {
+        email = userDto.getName().toLowerCase().replace(" ", ".")
+                + System.currentTimeMillis() + "@company.com";
+    }
+
+    User newUser = User.builder()
+            .name(userDto.getName())
+            .email(email)
+            .floor(standardizedFloor)
+            .role(User.UserRole.EMPLOYEE)
+            .build();
+
+    return userRepository.save(newUser);
+}
 
     private String standardizeFloorFormat(String floor) {
         if (floor == null) return "Ground Floor";
