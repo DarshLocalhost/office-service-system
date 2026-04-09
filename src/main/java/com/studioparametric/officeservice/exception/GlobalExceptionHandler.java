@@ -36,15 +36,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(
-            Exception ex, WebRequest request) {
-        log.error("Unexpected error: {}", ex.getMessage(), ex);
-        ErrorResponse error = ErrorResponse.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message("An unexpected error occurred")
-                .timestamp(System.currentTimeMillis())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+   @ExceptionHandler(Exception.class)
+public ResponseEntity<ErrorResponse> handleGlobalException(
+        Exception ex, WebRequest request) {
+    log.error("Unexpected error: {}", ex.getMessage(), ex);
+
+    ErrorResponse error = ErrorResponse.builder()
+            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            .message(ex.getMessage()) // 🔥 CHANGE HERE
+            .timestamp(System.currentTimeMillis())
+            .build();
+
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+}
 }
