@@ -22,8 +22,10 @@ public class Item {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+@JoinColumn(name = "category_id", nullable = false)
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+private Category category;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
